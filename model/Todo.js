@@ -1,17 +1,13 @@
 const mongoose = require("mongoose");
 
 const TodoSchema = new mongoose.Schema({
-  title: {
+  uid: {
     type: String,
     required: true,
   },
-  description: {
+  text: {
     type: String,
     required: true,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
   },
   createdAt: {
     type: Date,

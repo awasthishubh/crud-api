@@ -1,24 +1,30 @@
 const Todo = require("../model/Todo");
 
 const getTodos = (req, res) => {
-  Todo.find((err, todos) => {
+  Todo.find({ uid: req.query.uid }, (err, todos) => {
     if (err) {
       res.send(err);
     }
-    res.json(todos);
+    if (req.query.rawoutput == 'true') {
+      res.set('Content-Type', 'text/plain');
+      res.send(todos.map(t=>t.text).join('\n'));
+    }
+    else {
+      res.json(todos);
+    }
   });
 };
 
 const createTodo = (req, res) => {
   const todo = new Todo({
-    title: req.body.title,
-    description: req.body.description,
-    completed: req.body.completed,
+    text: req.query.text,
+    uid: req.query.uid,
   });
 
   todo.save((err, todo) => {
     if (err) {
       res.send(err);
+      return;
     }
     res.json(todo);
   });
