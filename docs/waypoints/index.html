@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Location Waypoints</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <link rel='stylesheet' href='https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css'>
+  <link rel='stylesheet'
+    href='https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.5/leaflet-routing-machine.css'>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <input class="date_box" name="dates" readonly>
+  <div id="summary"></div>
+  <div class="map_box" id="map"></div>
+  <!-- partial -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js'></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src='https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.5/leaflet-routing-machine.js'></script>
+  <script src='https://rawgit.com/perliedman/leaflet-routing-machine/master/examples/Control.Geocoder.js'></script>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>

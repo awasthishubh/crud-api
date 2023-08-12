@@ -1,0 +1,30 @@
+.map_box {
+	display: block;
+	position: relative;
+	width: 100vw;
+	height: calc(100vh - 34px);
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.date_box {
+	width: calc(100vw - 4px);
+	height: 30px;
+	text-align: center;
+	font-size: medium;
+}
+#summary {
+	display: block;
+	height: 40px;
+	font-size: medium;
+	text-align: center;
+	display: none;
+}
+
+.leaflet-routing-container tbody {
+    display: none;
+}
+
