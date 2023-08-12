@@ -1,20 +1,21 @@
-$('input[name="dates"]').daterangepicker({
-   opens: 'center',
-   timePicker: true,
-   startDate: moment().startOf('day'),
-   endDate: moment().endOf('day'),
-   alwaysShowCalendars: true,
-   ranges: {
-      'Today': [moment().startOf('day'), moment().endOf('day')],
-      'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-      'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-      'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
-      'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
-   }
-}, function (start, end) {
-   parseData(start, end)
-});
+function initiateDatetime(startDate, endDate) {
+   $('input[name="dates"]').daterangepicker({
+      opens: 'center',
+      timePicker: true,
+      startDate, endDate,
+      alwaysShowCalendars: true,
+      ranges: {
+         'Today': [moment().startOf('day'), moment().endOf('day')],
+         'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+         'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+         'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
+         'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+         'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
+      }
+   }, function (start, end) {
+      parseData(start, end)
+   });
+}
 
 const mapboxUrl = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
 var map;
@@ -36,6 +37,7 @@ fetch('https://crud-app-y50p.onrender.com/get?uid=car-VERNA&rawoutput=true').the
          }
       }).filter(r => r.car === 'VERNA').reverse().sort((a, b) => a.time - b.time);
       locations = _.unique(locations, (l) => (l.lat, l.lng));
+      initiateDatetime(moment(locations[0].time), moment(locations[locations.length - 1].time))
       parseData();
    })
 })
@@ -76,7 +78,6 @@ function setMap(locations) {
    controller.on('routesfound', function (e) {
       var routes = e.routes;
       var summary = routes[0].summary;
-      // alert distance and time in km and minutes
       console.log(routes[0]);
       $('#summary').html(`<b>${routes[0].name}</b><br>${Math.round(summary.totalDistance / 10, 2) / 100} km, ${Math.round(summary.totalTime % 3600 / 60)} minutes`);
    });
@@ -84,7 +85,7 @@ function setMap(locations) {
       markers = L.marker([l.lat, l.lng], {
          title: `#${i + 1} ${i === 0 ? 'Start' : i === locations.length - 1 ? 'End' : ''}`
       }).addTo(map)
-         .bindPopup(`<center>#${i + 1} ${i === 0 ? 'Start' : i === locations.length - 1 ? 'End' : ''}<br>${moment(l.time).fromNow()}<br>${moment(l.time).calendar()}<br>${moment(l.time).format("MMM Do YY")}<a href="${l.link}"><br>GMap</a></center>`)
+         .bindPopup(`<center>#${i + 1} ${i === 0 ? 'Start' : i === locations.length - 1 ? 'End' : ''}<br>${moment(l.time).fromNow()}<br>${moment(l.time).calendar()}<br>${moment(l.time).format("MMM Do YY")}<a target="_blank" href="${l.link}"><br>GMap</a></center>`)
    })
    map.closePopup();
 
