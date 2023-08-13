@@ -37,7 +37,9 @@ fetch('https://crud-app-y50p.onrender.com/get?uid=car-VERNA&rawoutput=true').the
          }
       }).filter(r => r.car === 'VERNA').reverse().sort((a, b) => a.time - b.time);
       locations = _.unique(locations, (l) => (l.lat, l.lng));
-      initiateDatetime(moment(locations[0].time), moment(locations[locations.length - 1].time))
+      if (locations.length) {
+         initiateDatetime(moment(locations[0].time), moment(locations[locations.length - 1].time));
+      } else initiateDatetime();
       parseData();
    })
 })
@@ -45,6 +47,9 @@ fetch('https://crud-app-y50p.onrender.com/get?uid=car-VERNA&rawoutput=true').the
 function parseData(start, end) {
    console.log('new', start, end)
    locationsView = locations.filter(loc => !start || !end || (start <= loc.time && loc.time <= end))
+   if (locationsView.length)
+      $('#lastLoc').html(`<a href="${locationsView[locationsView.length - 1].link}" target="_blank">Last location at
+       ${locationsView[locationsView.length - 1].time.toLocaleTimeString()} on ${locationsView[locationsView.length - 1].time.toLocaleDateString()}.`)
    construct();
    setMap(locationsView);
 }

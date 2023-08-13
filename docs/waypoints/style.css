@@ -2,7 +2,7 @@
 	display: block;
 	position: relative;
 	width: 100vw;
-	height: calc(100vh - 34px);
+	height: calc(100vh - 64px);
 }
 
 * {
@@ -16,12 +16,12 @@
 	text-align: center;
 	font-size: medium;
 }
-#summary {
+#lastLoc {
 	display: block;
-	height: 40px;
+	height: 20px;
+	padding: 5px;
 	font-size: medium;
 	text-align: center;
-	display: none;
 }
 
 .leaflet-routing-container tbody {
