@@ -24,7 +24,7 @@ var locationsView = [];
 
 fetch('https://crud-app-y50p.onrender.com/get?uid=car-VERNA&rawoutput=true').then(res => {
    res.text().then(data => {
-      locations = data.split('\n').map(r => {
+      allLocations = data.split('\n').map(r => {
          rec = r.slice(1, r.length - 1).split('][');
          return {
             car: rec[1],
@@ -36,20 +36,24 @@ fetch('https://crud-app-y50p.onrender.com/get?uid=car-VERNA&rawoutput=true').the
             link: rec[7],
          }
       }).filter(r => r.car === 'VERNA').reverse().sort((a, b) => a.time - b.time);
-      locations = _.unique(locations, (l) => (l.lat, l.lng));
+      locations = [];
+      allLocations.forEach(l=>{
+         if(!locations.at(-1) || locations.at(-1).lat != l.lat || locations.at(-1).lng != l.lng){
+            locations.push(l)
+         }
+      })
       if (locations.length) {
-         initiateDatetime(moment(locations[0].time), moment(locations[locations.length - 1].time));
+         initiateDatetime(moment(locations[0].time), moment(locations.at(-1).time));
       } else initiateDatetime();
       parseData();
    })
 })
 
 function parseData(start, end) {
-   console.log('new', start, end)
    locationsView = locations.filter(loc => !start || !end || (start <= loc.time && loc.time <= end))
    if (locationsView.length)
-      $('#lastLoc').html(`<a href="${locationsView[locationsView.length - 1].link}" target="_blank">Last location at
-       ${locationsView[locationsView.length - 1].time.toLocaleTimeString()} on ${locationsView[locationsView.length - 1].time.toLocaleDateString()}.`)
+      $('#lastLoc').html(`<a href="${locationsView[locationsView.length - 1].link}" target="_blank">Last location ${moment(locationsView[locationsView.length - 1].time).fromNow()}
+       (${locationsView[locationsView.length - 1].time.toLocaleString()}).`)
    construct();
    setMap(locationsView);
 }
@@ -83,7 +87,6 @@ function setMap(locations) {
    controller.on('routesfound', function (e) {
       var routes = e.routes;
       var summary = routes[0].summary;
-      console.log(routes[0]);
       $('#summary').html(`<b>${routes[0].name}</b><br>${Math.round(summary.totalDistance / 10, 2) / 100} km, ${Math.round(summary.totalTime % 3600 / 60)} minutes`);
    });
    locations.forEach((l, i) => {
